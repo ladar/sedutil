@@ -124,7 +124,7 @@ public:
           *  @param column UID or CPIN to be returned
           *  @param userData The UIS or CPIN of the USER
           */
-	uint8_t getAuth4User(char * userid, uint8_t column, std::vector<uint8_t> &userData);
+	uint8_t getAuth4User(const char * userid, uint8_t column, std::vector<uint8_t> &userData);
         /**  Enable a user in the Locking SP  
          * @param password the password of the Locking SP administrative authority 
          * @param userid Character name of the user to be enabled
@@ -132,10 +132,11 @@ public:
 	uint8_t enableUser(char * password, char * userid, OPAL_TOKEN status = OPAL_TOKEN::OPAL_TRUE);
         /** Primitive to set the MBRDone flag.
          * @param state 0 or 1  
-         * @param Admin1Password Locking SP authority with access to flag
+         * @param userid The authority which want to change the MBRDone flag
+         * @param password Locking SP authority with access to flag
 		 * @param status true or false to enable/disable
          */
-	uint8_t setMBRDone(uint8_t state, char * Admin1Password);
+	uint8_t setMBRDone(uint8_t state, const char *userid, char * password);
           /** Primitive to set the MBREnable flag.
          * @param state 0 or 1  
          * @param Admin1Password Locking SP authority with access to flag
@@ -162,7 +163,7 @@ public:
          * @param Admin1Password password of the locking administrative authority 
          */
 	uint8_t setLockingRange(uint8_t lockingrange, uint8_t lockingstate,
-		char * Admin1Password);
+		const char *userid, char * password);
 	/** Change the locking state of a locking range in Single User Mode
          * @param lockingrange The number of the locking range (0 = global)
          * @param lockingstate  the locking state to set
@@ -266,16 +267,25 @@ public:
          */
 	uint8_t rawCmd(char *sp, char * auth, char *pass,
 		char *invoker, char *method, char *plist);
+
+    /** Add the authority to Locking (Rd/RW) and MBRControl DoneToDOR ACEs
+      * This function gets authorities already in ACEs.
+      * Only the OR boolean_ACE are handled in boolean expressions.
+      * @param Admin1Password Password of the LockingSP authority
+      * @param userid The authority to add to Locking ACEs
+      */
+    uint8_t addUserToLockingACEs(const char *userid, char *Admin1Password);
 protected:
         /** Primitive to handle the setting of a value in the locking sp.
          * @param table_uid UID of the table 
          * @param name column to be altered
          * @param value the value to be set
-         * @param password password for the administrative authority 
+         * @param userid the authority uid which wants to alter the lockingSP
+         * @param password password for the userid authority
          * @param msg message to be displayed upon successful update;
          */
 	uint8_t setLockingSPvalue(OPAL_UID table_uid, OPAL_TOKEN name, OPAL_TOKEN value,
-		char * password, char * msg = (char *) "New Value Set");
+		const char *userid, char * password, char * msg = (char *) "New Value Set");
 
 	uint8_t getDefaultPassword();
 	typedef struct lrStatus
@@ -294,6 +304,19 @@ protected:
 	 *  @param password Admin1 Password for TPer
 	 */
 	lrStatus_t getLockingRange_status(uint8_t lockingrange, char * password);
+
+    /** Set authorities to the ACE
+      * @param users_uid The list of authorities to set
+      * @param ace_uid The ACE to modify
+      */
+    uint8_t setAuthoritiesToACE(const std::vector<std::vector<uint8_t>>& users_uid, OPAL_UID ace_uid);
+
+    /** Get authorities of the ACE
+      * This function fails if all boolean_ACES are not OR
+      * @param ace_uid The ACE to read
+      * @param authorities_uid Vector containing authorities uids
+      */
+    uint8_t getAuthoritiesFromACE(OPAL_UID ace_uid, std::vector<std::vector<uint8_t>>& authorities_uid);
 
     /** Ask the user to input a new password. 
       * This function fails if the first password and it's confirmation differs 
