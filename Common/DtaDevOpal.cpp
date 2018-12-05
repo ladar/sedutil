@@ -2106,7 +2106,7 @@ uint8_t DtaDevOpal::askNewPassword(std::shared_ptr<SecureString> &password, bool
     if (confirm) {
         std::shared_ptr<SecureString> pwdcheck = GetPassPhrase("Please confirm the new password ");
 
-        if (password != pwdcheck) {
+        if (*password != *pwdcheck) {
             password->clear();
             lastRC = OPALSTATUSCODE::FAIL;
         }
