@@ -85,6 +85,7 @@ std::shared_ptr<SecureString> GetPassPhrase(const char *prompt, bool show_asteri
          }
     }
 
+  printf("\n");
   return password;
 }
 
