@@ -272,7 +272,7 @@ int main(int argc, char * argv[])
 		break;
     case sedutiloption::addUserToLockingACEs:
         LOG(D) << "Performing addUserToLockingACEs";
-        return d->addUserToLockingACEs(argv[opts.userid], argv[opts.password]);
+        return d->addUserToLockingACEs(argv[opts.userid], GET_PASSWORD());
 		break;
     default:
         LOG(E) << "Unable to determine what you want to do ";
