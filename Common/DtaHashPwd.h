@@ -34,7 +34,7 @@ using namespace std;
  * @param device the device where the password is to be used
  */
 void DtaHashPwd(std::shared_ptr<SecureByteVector> &hash, char * password, DtaDev * device);
-/** Hash a passwor using the PBDKF2<SHA1> function 
+/** Hash a passwor using the PBDKF2<SHA2> function 
  *
  * @param hash Field where hash returned
  * @param password password to be hashed
@@ -43,6 +43,6 @@ void DtaHashPwd(std::shared_ptr<SecureByteVector> &hash, char * password, DtaDev
  * @param hashsize size of hash to be returned
  */
 void DtaHashPassword(std::shared_ptr<SecureByteVector> &hash, char * password, vector<uint8_t> salt,
-        unsigned int iter = 75000, uint8_t hashsize = 32);
+        unsigned int iter = 500000, uint8_t hashsize = 32);
 /** Test the hshing function using publicly available test cased and report */
 int TestPBKDF2();
