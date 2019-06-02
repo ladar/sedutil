@@ -30,7 +30,7 @@ uint8_t DtaDevLinuxDrive::prepareForS3Sleep(uint8_t lockingrange, const char *us
 
     opal_lock_unlock opal_ioctl_data={};
     opal_ioctl_data.l_state = OPAL_RW;
-    opal_ioctl_data.session.opal_key.lr = 0;
+    opal_ioctl_data.session.opal_key.lr = lockingrange;
 
     if (!strcmp("Admin1", userid))
     {
