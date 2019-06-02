@@ -124,7 +124,7 @@ public:
           *  @param column UID or CPIN to be returned
           *  @param userData The UIS or CPIN of the USER
           */
-	uint8_t getAuth4User(const char * userid, uint8_t column, std::vector<uint8_t> &userData);
+	static uint8_t getAuth4User(const char * userid, uint8_t column, std::vector<uint8_t> &userData);
         /**  Enable a user in the Locking SP  
          * @param password the password of the Locking SP administrative authority 
          * @param userid Character name of the user to be enabled

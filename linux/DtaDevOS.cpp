@@ -168,7 +168,7 @@ int  DtaDevOS::diskScan()
 	return 0;
 }
 
-uint8_t DtaDevOS::prepareForS3Sleep(uint8_t lockingrange, char* password)
+uint8_t DtaDevOS::prepareForS3Sleep(uint8_t lockingrange, const char* userid, char* password)
 {
     LOG(D1) << "Entering DtaDevOS::prepareForS3Sleep ";
     LOG(D2) << "Starting testing of password ";
@@ -178,7 +178,13 @@ uint8_t DtaDevOS::prepareForS3Sleep(uint8_t lockingrange, char* password)
 		return DTAERROR_OBJECT_CREATE_FAILED;
 	}
     int err;
-	if ((err = session->start(OPAL_UID::OPAL_LOCKINGSP_UID, password, OPAL_UID::OPAL_ADMIN1_UID)) != 0) {
+	vector<uint8_t> userUID;
+	if ((err = DtaDevOpal::getAuth4User(userid, 0, userUID)) != 0) {
+		LOG(E) << "Unable to find user " << userid << " in Authority Table";
+		delete session;
+		return err;
+	}
+	if ((err = session->start(OPAL_UID::OPAL_LOCKINGSP_UID, password, userUID)) != 0) {
 		delete session;
 		LOG(E) << "Unable to authenticate with the given password";
 		return err;
@@ -189,7 +195,7 @@ uint8_t DtaDevOS::prepareForS3Sleep(uint8_t lockingrange, char* password)
     DtaHashPwd(hash, password, this);
     hash->erase(hash->begin(), hash->begin()+2);
 
-    err = drive->prepareForS3Sleep(0, hash);
+    err = drive->prepareForS3Sleep(0, userid, hash);
     if (err)
     {
         LOG(E) << "Error saving the password to  the kernel errno = " << errno;

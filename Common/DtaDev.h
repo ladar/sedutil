@@ -260,9 +260,10 @@ public:
 	virtual uint8_t eraseLockingRange(uint8_t lockingrange, char * password) = 0;
     /** Optionally implemented s3 sleep support.
      * On Linux, it saves the password to the kernel to use on resume.
+     * @param userid the user to save along with the password
      * @param password the password to save to the kernel
      */
-    virtual uint8_t prepareForS3Sleep(uint8_t lockingrange, char* password);
+    virtual uint8_t prepareForS3Sleep(uint8_t lockingrange, const char* userid, char* password);
 	/** Dumps an object for diagnostic purposes
 	 * @param sp index into the OPALUID table for the SP the object is in
 	 * @param auth the authority ti use for the dump

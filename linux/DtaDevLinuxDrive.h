@@ -48,6 +48,6 @@ public:
     /** Routine to send an identify to the device */
     virtual void identify(OPAL_DiskInfo& disk_info) = 0;
     /** Save the password hash to the kernel for S3 sleep wakeup */
-    uint8_t prepareForS3Sleep(uint8_t lockingrange, const std::shared_ptr<SecureByteVector> &hash);
+    uint8_t prepareForS3Sleep(uint8_t lockingrange, const char *userid, const std::shared_ptr<SecureByteVector> &hash);
     int fd; /**< Linux handle for the device  */
 };

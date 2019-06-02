@@ -24,14 +24,28 @@ along with sedutil.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
-uint8_t DtaDevLinuxDrive::prepareForS3Sleep(uint8_t lockingrange, const std::shared_ptr<SecureByteVector> &hash)
+uint8_t DtaDevLinuxDrive::prepareForS3Sleep(uint8_t lockingrange, const char *userid, const std::shared_ptr<SecureByteVector> &hash)
 {
     LOG(D1) << "Entering DtaDevLinuxDrive::prepareForS3Sleep";
 
     opal_lock_unlock opal_ioctl_data={};
     opal_ioctl_data.l_state = OPAL_RW;
-    opal_ioctl_data.session.who = OPAL_ADMIN1;
     opal_ioctl_data.session.opal_key.lr = 0;
+
+    if (!strcmp("Admin1", userid))
+    {
+        opal_ioctl_data.session.who = OPAL_ADMIN1;
+    }
+    else if (!memcmp("User", userid, 4))
+    {
+        int n = atoi(&userid[4]);
+        opal_ioctl_data.session.who = OPAL_USER1 + n - 1;
+    }
+    else
+    {
+        LOG(E) << "Invalid userid \"" << userid << "\"specified for prepareForS3Sleep";
+        return -1;
+    }
 
     size_t hash_len = min(hash->size(), sizeof(opal_ioctl_data.session.opal_key.key));
     LOG(D2) << "Setting a hash of length" << hash_len;

@@ -103,7 +103,7 @@ void usage()
     printf("--printPasswordHash <password> <device>\n");
     printf("                                print the hash of the password \n");
     printf("                                as computed by sedutil. Hex-ecoded.\n");
-    printf("--prepareForS3Sleep <0...n> <Admin1password> <device>\n");
+    printf("--prepareForS3Sleep <0...n> <userid> <password> <device>\n");
     printf("                                Automatically unlock range after S3 resume\n");
     printf("                                This command will save the password to kernel memory\n");
     printf("\n");
@@ -556,7 +556,7 @@ uint8_t DtaOptions(int argc, char * argv[], DTA_OPTIONS * opts)
             OPTION_IS(password)
             OPTION_IS(device)
         END_OPTION
-		BEGIN_OPTION(prepareForS3Sleep, 3, 3)
+		BEGIN_OPTION(prepareForS3Sleep, 4, 3)
 			TESTARG(0, lockingrange, 0)
 			TESTARG(1, lockingrange, 1)
 			TESTARG(2, lockingrange, 2)
@@ -574,6 +574,7 @@ uint8_t DtaOptions(int argc, char * argv[], DTA_OPTIONS * opts)
 			TESTARG(14, lockingrange, 14)
 			TESTARG(15, lockingrange, 15)
 			TESTFAIL("Invalid Locking Range (0-15)")
+			OPTION_IS(userid)
 			OPTION_IS(password)
 			OPTION_IS(device)
 		END_OPTION

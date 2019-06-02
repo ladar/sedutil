@@ -274,7 +274,7 @@ int main(int argc, char * argv[])
         break;
 	case sedutiloption::prepareForS3Sleep:
         LOG(D) << "Preparing for S3 sleep " << (uint16_t) opts.lockingrange;
-        return d->prepareForS3Sleep(opts.lockingrange, argv[opts.password]);
+        return d->prepareForS3Sleep(opts.lockingrange, argv[opts.userid], GET_PASSWORD());
 		break;
 	case sedutiloption::rawCmd:
 		LOG(D) << "Performing cmdDump ";
