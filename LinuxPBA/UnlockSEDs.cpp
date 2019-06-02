@@ -76,6 +76,7 @@ uint8_t UnlockSEDs(char * password) {
             d = new DtaDevOpal1(devref);
         delete tempDev;
         d->no_hash_passwords = false;
+        d->hex_passwords = false;
         unlock_state = OPALSTATUSCODE::FAIL;
         if (d->Locked()) {
             uint8_t j;
