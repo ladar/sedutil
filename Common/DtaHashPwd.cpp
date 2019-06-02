@@ -28,7 +28,7 @@ along with sedutil.  If not, see <http://www.gnu.org/licenses/>.
 
 extern "C" {
 #include "pbkdf2.h"
-#include "sha2.h"
+#include "sha1.h"
 }
 using namespace std;
 
@@ -54,7 +54,7 @@ void DtaHashPassword(std::shared_ptr<SecureByteVector> &hash, const SecureByteVe
 		salt.data(), salt.size(),
 		iter,
 		hash->data(), hash->size(),
-		&cf_sha512);
+		&cf_sha1);
 
 //	gc_pbkdf2_sha1(password, strnlen(password, 256), (const char *)salt.data(), salt.size(), iter,
 //		(char *)hash->data(), hash->size());

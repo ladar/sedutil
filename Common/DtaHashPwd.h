@@ -34,7 +34,7 @@ using namespace std;
  * @param device the device where the password is to be used
  */
 void DtaHashPwd(std::shared_ptr<SecureByteVector> &hash, char * password, DtaDev * device);
-/** Hash a passwor using the PBDKF2<SHA2> function 
+/** Hash a passwor using the PBDKF2<SHA1> function
  *
  * @param hash Field where hash returned
  * @param password password to be hashed
