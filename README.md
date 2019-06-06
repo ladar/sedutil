@@ -1,3 +1,22 @@
+# sedutil
+sedutil is for setting up and using self encrypting drives (SEDs) that
+comply with the TCG OPAL 2.00 standard. It has two parts:
+
+- The `sedutil-cli` command line utility which can set up and manage
+  SED features.
+- The pre-boot authorization image (PBA) which can be installed to an
+  encrypted disk's shadow MBR area to allow entering a password to unlock
+  the disk during boot.
+
+## Warning
+**Using this tool can make data on the drive inaccessible!**
+
+## Fork
+This is a fork of https://github.com/Drive-Trust-Alliance/sedutil and
+https://github.com/CyrilVanErsche/sedutil. It merges some upstream PRs
+and adds fixes.
+
+## Copyright / original notice
 ![alt tag](https://avatars0.githubusercontent.com/u/13870012?v=3&s=200)
 
 This software is Copyright 2014-2017 Bright Plaza Inc. <drivetrust@drivetrust.com>
@@ -16,25 +35,3 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with sedutil.  If not, see <http://www.gnu.org/licenses/>.
-
-
-sedutil - The Drive Trust Alliance Self Encrypting Drive Utility
-
-This program and it's accompanying Pre-Boot Authorization image allow
-you to enable the locking in SED's that comply with the TCG OPAL 2.00
-standard on bios machines.   
-
-You must be administrator/root to run the host managment program
-
-In Linux libata.allow_tpm must be set to 1. Either via adding libata.allow_tpm=1 to the kernel flags at boot time 
-or changing the contents of /sys/module/libata/parameters/allow_tpm from a "0" to a "1" on a running system.
-
-***** sleep (S3) is not supported.
-
-Source code is available on GitHub at https://github.com/Drive-Trust-Alliance/sedutil 
-
-Linux and Windows executables are available at https://github.com/Drive-Trust-Alliance/sedutil/wiki/Executable-Distributions
-
-If you are looking for the PSID revert function see linux/PSIDRevert_LINUX.txt or win32/PSIDRevert_WINDOWS.txt
-
-PLEASE SEE CONTRIBUTING if you would like to make a code contribution.
