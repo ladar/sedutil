@@ -552,7 +552,7 @@ uint8_t DtaOptions(int argc, char * argv[], DTA_OPTIONS * opts)
 		BEGIN_OPTION(objDump, 5, 5) i += 4; OPTION_IS(device) END_OPTION
         BEGIN_OPTION(printDefaultPassword, 1, 1) OPTION_IS(device) END_OPTION
 		BEGIN_OPTION(rawCmd, 7, 7) i += 6; OPTION_IS(device) END_OPTION
-        BEGIN_OPTION(printPasswordHash, 2, 2)
+        BEGIN_OPTION(printPasswordHash, 2, 1)
             OPTION_IS(password)
             OPTION_IS(device)
         END_OPTION

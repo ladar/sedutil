@@ -270,7 +270,7 @@ int main(int argc, char * argv[])
         break;
     case sedutiloption::printPasswordHash:
 		LOG(D) << "print password hash";
-        return d->printPasswordHash(argv[opts.password]);
+        return d->printPasswordHash(GET_PASSWORD());
         break;
 	case sedutiloption::prepareForS3Sleep:
         LOG(D) << "Preparing for S3 sleep " << (uint16_t) opts.lockingrange;
