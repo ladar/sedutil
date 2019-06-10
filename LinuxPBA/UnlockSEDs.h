@@ -19,4 +19,9 @@ along with sedutil.  If not, see <http://www.gnu.org/licenses/>.
 * C:E********************************************************************** */
 #pragma once
 #include "os.h"
-uint8_t UnlockSEDs(char * password);
+
+/** Attempt to unlock drives and set MBRDone.
+ *
+ *  Return true if successful on at least one drive.
+ */
+bool UnlockSEDs(char * password);

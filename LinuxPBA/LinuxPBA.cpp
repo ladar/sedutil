@@ -36,8 +36,13 @@ int main(int argc, char** argv) {
     CLog::Level() = CLog::FromInt(0);
     LOG(D4) << "Legacy PBA start" << endl;
     printf("DTA LINUX Pre Boot Authorization \n");
-    std::shared_ptr<SecureString> p = GetPassPhrase("Please enter pass-phrase to unlock OPAL drives: ");
-    UnlockSEDs((char *)p->c_str());
+
+    std::shared_ptr<SecureString> p;
+    uint8_t n_unlocks = 0;
+    while (n_unlocks == 0) {
+        p = GetPassPhrase("Please enter pass-phrase to unlock OPAL drives: ");
+        n_unlocks += UnlockSEDs((char *)p->c_str());
+    }
     if (strcmp(p->c_str(), "debug")) {
         printf("Starting OS \n");
         sync();

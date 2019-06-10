@@ -29,7 +29,7 @@ along with sedutil.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
-uint8_t UnlockSEDs(char * password) {
+bool UnlockSEDs(char * password) {
 /* Loop through drives */
     char devref[25];
     OPALSTATUSCODE unlock_state = OPALSTATUSCODE::FAIL;
@@ -58,6 +58,7 @@ uint8_t UnlockSEDs(char * password) {
     }
     std::sort(devices.begin(),devices.end());
     printf("\nScanning....\n");
+    bool had_effect = false;
     for(uint16_t i = 0; i < devices.size(); i++) {
                 snprintf(devref,23,"/dev/%s",devices[i].c_str());
         tempDev = new DtaDevGeneric(devref);
@@ -86,14 +87,17 @@ uint8_t UnlockSEDs(char * password) {
                     unlock_state = (OPALSTATUSCODE) d->setMBRDone(1, users[j], password);
                 }
             }
-            (unlock_state == OPALSTATUSCODE::SUCCESS) ? printf("Drive %-10s %-40s is OPAL Unlocked\n", devref, d->getModelNum()):
+            if (unlock_state == OPALSTATUSCODE::SUCCESS) {
+                printf("Drive %-10s %-40s is OPAL Unlocked\n", devref, d->getModelNum());
+                had_effect = true;
+            } else {
                 printf("Drive %-10s %-40s is OPAL Failed  \n", devref, d->getModelNum()); 
-            delete d;
+            }
         }
         else {
             printf("Drive %-10s %-40s is OPAL NOT LOCKED   \n", devref, d->getModelNum());
-            delete d;
         }
+        delete d;
     }
-    return 0x00;
+    return had_effect;
 };
