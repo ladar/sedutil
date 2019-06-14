@@ -80,8 +80,7 @@ bool UnlockSEDs(char * password) {
         d->hex_passwords = false;
         unlock_state = OPALSTATUSCODE::FAIL;
         if (d->Locked()) {
-            uint8_t j;
-            for (j = 0; unlock_state != OPALSTATUSCODE::SUCCESS && j < nb_users; j++) {
+            for (uint8_t j = 0; unlock_state != OPALSTATUSCODE::SUCCESS && j < nb_users; j++) {
                 unlock_state = (OPALSTATUSCODE) d->setLockingRange(0, OPAL_LOCKINGSTATE::READWRITE, users[j], password);
                 if (unlock_state == OPALSTATUSCODE::SUCCESS && d->MBREnabled()) {
                     unlock_state = (OPALSTATUSCODE) d->setMBRDone(1, users[j], password);
@@ -92,6 +91,17 @@ bool UnlockSEDs(char * password) {
                 had_effect = true;
             } else {
                 printf("Drive %-10s %-40s is OPAL Failed  \n", devref, d->getModelNum()); 
+            }
+        }
+        else if (d->MBREnabled() && !d->MBRDone()) {
+            for (uint8_t j = 0; unlock_state != OPALSTATUSCODE::SUCCESS && j < nb_users; j++) {
+                unlock_state = (OPALSTATUSCODE) d->setMBRDone(1, users[j], password);
+            }
+            if (unlock_state == OPALSTATUSCODE::SUCCESS) {
+                printf("Drive %-10s %-40s is OPAL MBR Done\n", devref, d->getModelNum());
+                had_effect = true;
+            } else {
+                printf("Drive %-10s %-40s is OPAL Failed setting MBR Done\n", devref, d->getModelNum());
             }
         }
         else {
