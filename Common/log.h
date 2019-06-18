@@ -55,7 +55,7 @@ class Log {
 public:
     Log();
     virtual ~Log();
-    std::ostringstream& Get(TLogLevel level = I);
+    std::ostringstream& Get(TLogLevel level = W);
 public:
     static TLogLevel& Level();
     static std::string ToString(TLogLevel level);

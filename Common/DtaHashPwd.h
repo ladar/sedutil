@@ -26,7 +26,7 @@ using namespace std;
 /** Hash the password using the drive serial number as salt.
  * This is far from ideal but it's better that a single salt as
  * it should prevent attacking the password with a prebuilt table
- * 
+ *
  * This is an intermediary pass through so that the real hash
  * function (DtaHashPassword) can be tested and verified.
  * @param  hash The field whare the hash is to be placed
@@ -34,15 +34,15 @@ using namespace std;
  * @param device the device where the password is to be used
  */
 void DtaHashPwd(std::shared_ptr<SecureByteVector> &hash, char * password, DtaDev * device);
-/** Hash a passwor using the PBDKF2<SHA1> function
+/** Hash a passwor using the PBDKF2<SHA2> function
  *
  * @param hash Field where hash returned
  * @param password password to be hashed
  * @param salt salt to be used in the hash
- * @param iter number of iterations to be preformed 
+ * @param iter number of iterations to be preformed
  * @param hashsize size of hash to be returned
  */
 void DtaHashPassword(std::shared_ptr<SecureByteVector> &hash, const SecureByteVector &password,
-        const vector<uint8_t> &salt, unsigned int iter = 75000, uint8_t hashsize = 32);
+        const vector<uint8_t> &salt, unsigned int iter = 275000, uint8_t hashsize = 32);
 /** Test the hshing function using publicly available test cased and report */
 int TestPBKDF2();
