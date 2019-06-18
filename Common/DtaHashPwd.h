@@ -43,6 +43,6 @@ void DtaHashPwd(std::shared_ptr<SecureByteVector> &hash, char * password, DtaDev
  * @param hashsize size of hash to be returned
  */
 void DtaHashPassword(std::shared_ptr<SecureByteVector> &hash, const SecureByteVector &password,
-        const vector<uint8_t> &salt, unsigned int iter = 275000, uint8_t hashsize = 32);
+        const vector<uint8_t> &salt, unsigned int iter = 75000, uint8_t hashsize = 32);
 /** Test the hshing function using publicly available test cased and report */
 int TestPBKDF2();

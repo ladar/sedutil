@@ -28,7 +28,7 @@ along with sedutil.  If not, see <http://www.gnu.org/licenses/>.
 
 extern "C" {
 #include "pbkdf2.h"
-#include "sha2.h"
+#include "sha1.h"
 }
 using namespace std;
 
@@ -39,7 +39,7 @@ void DtaHashPassword(std::shared_ptr<SecureByteVector> &hash, const SecureByteVe
 	// if the hashsize can be > 255 the token overhead logic needs to be fixed
 	assert(1 == sizeof(hashsize));
 	if (253 < hashsize) { LOG(E) << "Hashsize > 253 incorrect token generated"; }
-	
+
 	hash->clear();
 	// don't hash the devault OPAL password ''
 	if (0 == password.size()) {
@@ -49,12 +49,12 @@ void DtaHashPassword(std::shared_ptr<SecureByteVector> &hash, const SecureByteVe
 	for (uint16_t i = 0; i < hashsize; i++) {
 		hash->push_back(' ');
 	}
-	
+
 	cf_pbkdf2_hmac(&password[0], password.size(),
 		salt.data(), salt.size(),
 		iter,
 		hash->data(), hash->size(),
-		&cf_sha512);
+		&cf_sha1);
 
 //	gc_pbkdf2_sha1(password, strnlen(password, 256), (const char *)salt.data(), salt.size(), iter,
 //		(char *)hash->data(), hash->size());
@@ -179,4 +179,3 @@ int TestPBKDF2()
         cout << "**FAILED**\n";
     return 0;
 }
-
