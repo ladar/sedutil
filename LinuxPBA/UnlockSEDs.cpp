@@ -30,11 +30,8 @@ along with sedutil.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
-uint8_t total_failures = 0;
-
 bool UnlockSEDs(char * password) {
 /* Loop through drives */
-    uint8_t failure = 0;
     char devref[25];
     OPALSTATUSCODE unlock_state = OPALSTATUSCODE::FAIL;
     DtaDev *tempDev;
@@ -95,7 +92,6 @@ bool UnlockSEDs(char * password) {
                 had_effect = true;
             } else {
                 printf(" Drive %s FAILED.\n", devref);
-                failure = 0;
             }
         }
         else if (d->MBREnabled() && !d->MBRDone()) {
@@ -115,10 +111,5 @@ bool UnlockSEDs(char * password) {
         delete d;
     }
 
-    if (failure == 1) total_failures++;
-    if (total_failures >= 4) {
-      sync();
-      reboot(RB_AUTOBOOT);
-    }
     return had_effect;
 };
