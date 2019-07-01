@@ -26,11 +26,15 @@ along with sedutil.  If not, see <http://www.gnu.org/licenses/>.
 #include <dirent.h>
 #include <fnmatch.h>
 #include <algorithm>
+#include <sys/reboot.h>
 
 using namespace std;
 
+uint8_t total_failures = 0;
+
 bool UnlockSEDs(char * password) {
 /* Loop through drives */
+    uint8_t failure = 0;
     char devref[25];
     OPALSTATUSCODE unlock_state = OPALSTATUSCODE::FAIL;
     DtaDev *tempDev;
@@ -46,7 +50,7 @@ bool UnlockSEDs(char * password) {
     if(dir!=NULL)
     {
         while((dirent=readdir(dir))!=NULL) {
-            if((!fnmatch("sd[a-z]",dirent->d_name,0)) || 
+            if((!fnmatch("sd[a-z]",dirent->d_name,0)) ||
                     (!fnmatch("nvme[0-9]",dirent->d_name,0)) ||
                     (!fnmatch("nvme[0-9][0-9]",dirent->d_name,0))
                     ) {
@@ -57,7 +61,7 @@ bool UnlockSEDs(char * password) {
         closedir(dir);
     }
     std::sort(devices.begin(),devices.end());
-    printf("\nScanning....\n");
+    printf("\nScanning...\n");
     bool had_effect = false;
     for(uint16_t i = 0; i < devices.size(); i++) {
                 snprintf(devref,23,"/dev/%s",devices[i].c_str());
@@ -66,7 +70,7 @@ bool UnlockSEDs(char * password) {
             break;
         }
         if ((!tempDev->isOpal1()) && (!tempDev->isOpal2())) {
-            printf("Drive %-10s %-40s not OPAL  \n", devref, tempDev->getModelNum());
+            printf("Drive %-10s (%s) not OPAL.\n", devref, tempDev->getModelNum());
 
             delete tempDev;
             continue;
@@ -87,10 +91,11 @@ bool UnlockSEDs(char * password) {
                 }
             }
             if (unlock_state == OPALSTATUSCODE::SUCCESS) {
-                printf("Drive %-10s %-40s is OPAL Unlocked\n", devref, d->getModelNum());
+                printf("Drive %s UNLOCKED.\n", devref);
                 had_effect = true;
             } else {
-                printf("Drive %-10s %-40s is OPAL Failed  \n", devref, d->getModelNum()); 
+                printf("Drive %s FAILED.\n", devref);
+                failure = 0;
             }
         }
         else if (d->MBREnabled() && !d->MBRDone()) {
@@ -108,6 +113,12 @@ bool UnlockSEDs(char * password) {
             printf("Drive %-10s %-40s is OPAL NOT LOCKED   \n", devref, d->getModelNum());
         }
         delete d;
+    }
+
+    if (failure == 1) total_failures++;
+    if (total_failures >= 4) {
+      sync();
+      reboot(RB_AUTOBOOT);
     }
     return had_effect;
 };
