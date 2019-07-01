@@ -61,7 +61,7 @@ bool UnlockSEDs(char * password) {
         closedir(dir);
     }
     std::sort(devices.begin(),devices.end());
-    printf("\nScanning...\n");
+    printf("\n Scanning...\n");
     bool had_effect = false;
     for(uint16_t i = 0; i < devices.size(); i++) {
                 snprintf(devref,23,"/dev/%s",devices[i].c_str());
@@ -70,7 +70,7 @@ bool UnlockSEDs(char * password) {
             break;
         }
         if ((!tempDev->isOpal1()) && (!tempDev->isOpal2())) {
-            printf("Drive %-10s (%s) not OPAL.\n", devref, tempDev->getModelNum());
+            printf(" Drive %-10s (%s) is not compatible with OPAL.\n", devref, tempDev->getModelNum());
 
             delete tempDev;
             continue;
@@ -91,10 +91,10 @@ bool UnlockSEDs(char * password) {
                 }
             }
             if (unlock_state == OPALSTATUSCODE::SUCCESS) {
-                printf("Drive %s UNLOCKED.\n", devref);
+                printf(" Drive %s UNLOCKED.\n", devref);
                 had_effect = true;
             } else {
-                printf("Drive %s FAILED.\n", devref);
+                printf(" Drive %s FAILED.\n", devref);
                 failure = 0;
             }
         }
@@ -103,14 +103,14 @@ bool UnlockSEDs(char * password) {
                 unlock_state = (OPALSTATUSCODE) d->setMBRDone(1, users[j], password);
             }
             if (unlock_state == OPALSTATUSCODE::SUCCESS) {
-                printf("Drive %-10s %-40s is OPAL MBR Done\n", devref, d->getModelNum());
+                printf(" Drive %-10s %-40s is OPAL MBR Done\n", devref, d->getModelNum());
                 had_effect = true;
             } else {
-                printf("Drive %-10s %-40s is OPAL Failed setting MBR Done\n", devref, d->getModelNum());
+                printf(" Drive %-10s %-40s is OPAL Failed setting MBR Done\n", devref, d->getModelNum());
             }
         }
         else {
-            printf("Drive %-10s %-40s is OPAL NOT LOCKED   \n", devref, d->getModelNum());
+            printf(" Drive %-10s %-40s is OPAL NOT LOCKED   \n", devref, d->getModelNum());
         }
         delete d;
     }

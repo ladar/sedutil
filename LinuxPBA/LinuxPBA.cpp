@@ -32,23 +32,22 @@ using namespace std;
 sedutiloutput outputFormat = sedutilNormal;
 
 int main(int argc, char** argv) {
-    
+
     CLog::Level() = CLog::FromInt(0);
     LOG(D4) << "Legacy PBA start" << endl;
-    printf("Boot Authorization \n");
+    printf("\n\n Boot Authorization \n");
 
 
     std::shared_ptr<SecureString> p;
     uint8_t n_unlocks = 0;
     while (n_unlocks == 0) {
-        p = GetPassPhrase("Password: ");
+        p = GetPassPhrase(" Password: ");
         n_unlocks += UnlockSEDs((char *)p->c_str());
     }
     if (strcmp(p->c_str(), "debug")) {
-        printf("Authorization accepted. Starting the system... \n");
+        printf(" Authorization accepted. Starting the system... \n");
         sync();
         reboot(RB_AUTOBOOT);
     }
     return 0;
 }
-
