@@ -44,15 +44,15 @@ int main(int argc, char** argv) {
         p = GetPassPhrase(" Password: ");
         n_unlocks += UnlockSEDs((char *)p->c_str());
     }
-    if (strcmp(p->c_str(), "debug") && n_counter <= 4) {
+    if (strcmp(p->c_str(), "debug") && n_counter <= 2) {
         printf("\n Authorization accepted. Starting the system... \n");
         sync();
         reboot(RB_AUTOBOOT);
     }
-    else if (n_counter >= 4) {
+    else if (n_counter >= 2) {
         printf("\n Authorization failed. Stopping the system... \n");
         sync();
-        reboot(RB_AUTOBOOT);
+        reboot(RB_POWER_OFF);
     }
     return 0;
 }
