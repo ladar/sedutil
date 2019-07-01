@@ -88,7 +88,7 @@ Log<T>::~Log() {
 
 template <typename T>
 TLogLevel& Log<T>::Level() {
-    static TLogLevel Level = D4;
+    static TLogLevel Level = W;
     return Level;
 }
 
@@ -189,7 +189,7 @@ RLog<T>::~RLog() {
 
 template <typename T>
 TLogLevel& RLog<T>::Level() {
-    static TLogLevel Level = D4;
+    static TLogLevel Level = W;
     return Level;
 }
 

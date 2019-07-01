@@ -13,6 +13,7 @@ cd buildroot
 git checkout -b PBABUILD ${BUILDROOT_TAG}  || die
 git reset --hard
 git clean -df
+find -name S40network -exec rm {} \;
 # add out of tree build directoried and files
 # 64 bit system
 mkdir 64bit
