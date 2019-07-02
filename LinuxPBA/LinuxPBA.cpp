@@ -49,7 +49,7 @@ int main(int argc, char** argv) {
         sync();
         reboot(RB_AUTOBOOT);
     }
-    else if (n_counter >= 2) {
+    else if (n_counter > 2) {
         printf("\n Authorization failed. Stopping the system... \n");
         sync();
         reboot(RB_POWER_OFF);
