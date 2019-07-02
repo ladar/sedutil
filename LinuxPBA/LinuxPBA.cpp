@@ -45,12 +45,12 @@ int main(int argc, char** argv) {
         n_unlocks += UnlockSEDs((char *)p->c_str());
     }
     if (strcmp(p->c_str(), "debug") && n_counter <= 2) {
-        printf("\n Authorization accepted. Starting the system... \n");
+        printf("\n Access granted. Starting the system... \n");
         sync();
         reboot(RB_AUTOBOOT);
     }
     else if (n_counter > 2) {
-        printf("\n Authorization failed. Stopping the system... \n");
+        printf("\n Authorization failed. Shutting down... \n");
         sync();
         reboot(RB_POWER_OFF);
     }
