@@ -12,4 +12,7 @@ sed -i "s/Loading %s... \", kernel_name/\\\nLoading %s... \", kernel_name/g" sys
 sed -i "s/Loading %s...\", initrd_name/Loading %s... \", initrd_name/g" syslinux-6.03/com32/elflink/ldlinux/kernel.c
 sed -i "s/Loading %s... \", kernel_name/\\\nLoading %s... \", kernel_name/g" syslinux-6.03/com32/modules/linux.c
 cd ${SYSLINUX}
-make spotless && make
+#make spotless
+#make bios
+make efi64
+make efi32
