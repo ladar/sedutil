@@ -11,3 +11,5 @@ tar xf ${SYSLINUX}.tar.xz
 sed -i "s/Loading %s... \", kernel_name/\\\nLoading %s... \", kernel_name/g" syslinux-6.03/com32/elflink/ldlinux/kernel.c
 sed -i "s/Loading %s...\", initrd_name/Loading %s... \", initrd_name/g" syslinux-6.03/com32/elflink/ldlinux/kernel.c
 sed -i "s/Loading %s... \", kernel_name/\\\nLoading %s... \", kernel_name/g" syslinux-6.03/com32/modules/linux.c
+cd ${SYSLINUX}
+make spotless && make
