@@ -15,4 +15,4 @@ cd ${SYSLINUX}
 #make spotless
 #make bios
 make efi64
-make efi32
+#make efi32
