@@ -40,19 +40,22 @@ int main(int argc, char** argv) {
 
     std::shared_ptr<SecureString> p;
     uint8_t n_unlocks = 0, n_counter = 0;
-    while (n_unlocks == 0 && n_counter++ <= 4) {
+    while (n_unlocks == 0 && n_counter < 3) {
         p = GetPassPhrase(" Password: ");
         n_unlocks += UnlockSEDs((char *)p->c_str());
+        if (n_unlocks == 0) n_counter++;
     }
-    if (strcmp(p->c_str(), "debug") && n_counter <= 2) {
-        printf("\n Access granted. Starting the system... \n");
-        sync();
-        reboot(RB_AUTOBOOT);
-    }
-    else if (n_counter > 2) {
+    
+    if (n_counter >= 3) {
         printf("\n Authorization failed. Shutting down... \n");
         sync();
         reboot(RB_POWER_OFF);
     }
+    else if (strcmp(p->c_str(), "debug")) {
+        printf("\n Access granted. Starting the system... \n");
+        sync();
+        reboot(RB_AUTOBOOT);
+    }
+
     return 0;
 }
