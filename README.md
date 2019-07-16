@@ -47,7 +47,7 @@ Unique to this repo are the following modifications:
 
 ## Backwards Compatibility
 
-By default SHA512 is used. If your configuring a drive for the first time this is appropriate. For those wanting to use tools and boot images in this repo with drives that have already been configured using a different version of sedutil, be sure to download the SHA1 release files. If you want to compile your own binaries using SHA1, then you will need to replace `&cf_sha512` with `&cf_sha1` on this (line)[https://github.com/ladar/sedutil/blob/master/Common/DtaHashPwd.cpp#L58] before you begin the build process.
+By default SHA512 is used. If your configuring a drive for the first time this is appropriate. For those wanting to use tools and boot images in this repo with drives that have already been configured using a different version of sedutil, be sure to download the SHA1 release files. If you want to compile your own binaries using SHA1, then you will need to replace `&cf_sha512` with `&cf_sha1` on this [line](https://github.com/ladar/sedutil/blob/master/Common/DtaHashPwd.cpp#L58) before you begin the build process.
 
 ## Build Process
 
@@ -81,10 +81,8 @@ The various recovery and boot images will be located in the `images` directory.
 
 ## Work in Progress
 
-I hope to implement support for chain loading a Linux distros. I have experimented with a couple of patches that accomplish this, albeit with serious caveats that sitll need to be addressed before I can commit them to this repo. 
+I hope to implement support for chain loading a Linux distros. I have experimented with a couple of patches that accomplish this, albeit with serious caveats that sitll need to be addressed before I can commit them to this repo.
 
 ## Testing
 
 I have only tested the boot images/release files on a ThinkPad with a Samsung EVO 970 NVMe drive. My testing has also focused primarily on the 64 bit UEFI images. While the other variants should work without issue, you should exercise caution, and if possible, test the release on a computer with data that is expendable.
-
-
