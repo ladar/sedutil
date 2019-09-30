@@ -53,7 +53,13 @@ By default SHA512 is used. If your configuring a drive for the first time this i
 
 First install the required packages to build this project, on ubuntu::
 ```
-sudo apt install autoconf nasm
+sudo apt install autoconf bc build-essential git nasm python rsync unzip
+```
+
+Note::
+
+```
+There are compile problems on ubuntu > 18.04. See https://github.com/ladar/sedutil/issues/2
 ```
 
 To compile your own version of `sedutil` you will need the standard development tools, an internet connection, and ~10 GB of disk space. Provided those requirements are met, you can simply run the following command:
