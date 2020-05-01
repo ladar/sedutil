@@ -51,6 +51,11 @@ By default SHA512 is used. If your configuring a drive for the first time this i
 
 ## Build Process
 
+First install the required packages to build this project, on ubuntu::
+```
+sudo apt install autoconf nasm
+```
+
 To compile your own version of `sedutil` you will need the standard development tools, an internet connection, and ~10 GB of disk space. Provided those requirements are met, you can simply run the following command:
 
 ```
