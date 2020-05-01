@@ -100,6 +100,8 @@ void usage()
     printf("                                print MSID \n");
 	printf("--addUserToLockingACEs <userid> <Admin1password> <device> \n");
 	printf("                                add UserX to locking ACEs\n");
+	printf("--enableUser <userid> <Admin1password> <device> \n");
+	printf("                                grant UserX permission to lock/unlock device\n");
     printf("--printPasswordHash <password> <device>\n");
     printf("                                print the hash of the password \n");
     printf("                                as computed by sedutil. Hex-ecoded.\n");
