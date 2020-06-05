@@ -6,7 +6,7 @@ The sedutil project provides a CLI tool (`sedutil-cli`) capable of setting up an
 
 To configure a drive, load a compatible [RECOVERY](https://github.com/Drive-Trust-Alliance/sedutil/releases) image onto a USB drive with the following commands:
 
-```
+```sh
 curl -L -o RESCUE64-1.15.1-87-SHA512.img.gz https://github.com/ladar/sedutil/releases/download/1.15.1-87/RESCUE64-1.15.1-87-SHA512.img.gz
 gunzip RESCUE64-1.15.1-87-SHA512.img.gz
 sudo dd if=RESCUE64-1.15.1-87-SHA512.img of=/dev/sd? bs=1k
@@ -15,7 +15,7 @@ sudo eject /dev/sd?
 
 Be sure to replace the **`?`** with the appropriate device letter. After creating the boot stick, reboot the target computer. Ensure the computer has **UEFI** and **CSM** support enabled before booting. When the recovery image has finished booting, you will see a login prompt. Type `root` to login and begin the setup process. To configure your drive run the following commands:
 
-```
+```sh
 gunzip /usr/sedutil/UEFI64-*.img.gz
 
 sedutil-cli --initialsetup PASSWORD /dev/nvme?
@@ -34,15 +34,13 @@ And the setup process is complete. Be sure to replace the **`?`** with the drive
 
 If you would like to create additional "user" passwords, you can run the following commands. These commands will setup password(s) capable of unlocking a device, but which lack the authority to perform administrative functions. This step is entirely optional.
 
-```
+```sh
 sedutil-cli --setPassword User1 USER-PASSWORD /dev/nvme?
 sedutil-cli --addUserToLockingACEs User1 ADMIN-PASSWORD /dev/nvme?
 sedutil-cli --enableUser User1 ADMIN-PASSWORD /dev/nvme?
 ```
 
 As with the setup process, be sure to replace the **`?`** with the drive number (typically 0). If you aren't using an NVME drive, update the entire device path accordingly. Replace **`USER-PASSWORD`**  with your own randomly generated string of 40 or more characters. Replace **`ADMIN-PASSWORD`** with the password you created during the setup phase. This will grant the newly created user permission to unlock the device.
-
-```
 
 ## Origin
 
@@ -65,19 +63,20 @@ By default SHA512 is used. If your configuring a drive for the first time this i
 ## Build Process
 
 First install the required packages to build this project, on ubuntu::
-```
+
+```sh
 sudo apt install autoconf nasm
 ```
 
 To compile your own version of `sedutil` you will need the standard development tools, an internet connection, and ~10 GB of disk space. Provided those requirements are met, you can simply run the following command:
 
-```
+```sh
 git clone https://github.com/ladar/sedutil/ && cd sedutil && autoreconf --install && ./configure && make all && cd images && ./getresources && ./buildpbaroot && ./buildbios && ./buildUEFI64 && mkdir UEFI64 && mv UEFI64-1.15*.img.gz UEFI64 && ./buildrescue Rescue32 && ./buildrescue Rescue64 && cd ..
 ```
 
 Or if you prefer a less compact version of the above command sequence:
 
-```
+```sh
 git clone https://github.com/ladar/sedutil/
 cd sedutil
 autoreconf --install
