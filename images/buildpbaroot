@@ -18,12 +18,12 @@ find -name S40network -exec rm {} \;
 # 64 bit system
 mkdir 64bit
 cp ../../buildroot/64bit/.config 64bit/
-cp ../../buildroot/64bit/* 64bit/
+cp ../../buildroot/64bit/kernel.config 64bit/
 cp -r ../../buildroot/64bit/overlay 64bit/
 # 32 bit system
 mkdir 32bit
 cp ../../buildroot/32bit/.config 32bit/
-cp ../../buildroot/32bit/* 32bit/
+cp ../../buildroot/32bit/kernel.config 32bit/
 cp -r ../../buildroot/32bit/overlay 32bit/
 # add the current buildroot packages
 sed -i '/sedutil/d' package/Config.in
