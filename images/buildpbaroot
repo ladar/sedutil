@@ -29,7 +29,7 @@ cp -r ../../buildroot/32bit/overlay 32bit/
 sed -i '/sedutil/d' package/Config.in
 sed -i '/menu "System tools"/a \\tsource "package/sedutil/Config.in"' package/Config.in
 cp -r ../../buildroot/packages/sedutil/ package/
-cp -r ../../buildroot/packages/busybox/busybox.custom.config package/busybox.custom.config
+cp -r ../../buildroot/packages/busybox/busybox.custom.config package/busybox/busybox.custom.config
 # Make a distribution from the current source
 cd ../../..
 autoreconf 
