@@ -3,9 +3,9 @@
 # sedutil
 #
 ################################################################################
-SEDUTIL_VERSION = 1.15.6
+SEDUTIL_VERSION = 1.16.0
 SEDUTIL_SOURCE = sedutil-$(SEDUTIL_VERSION).tar.gz
-SEDUTIL_SITE = http://www.foosoftware.org/download
+SEDUTIL_SITE = https://github.com/ladar/sedutil/
 SEDUTIL_INSTALL_STAGING = NO
 SEDUTIL_LIBTOOL_PATCH = NO
 SEDUTIL_INSTALL_TARGET = YES
