@@ -29,7 +29,7 @@ Vagrant.configure(2) do |config|
     git clone https://github.com/ladar/sedutil && cd sedutil
 
     if [ ! -f ./configure ]; then autoreconf --install ; fi
-    ./configure && make all && cd images && ./getresources && ./buildpbaroot && ./buildbios && ./buildUEFI64 && mkdir UEFI64 && mv UEFI64-1.15*.img.gz UEFI64 && ./buildrescue Rescue32 && ./buildrescue Rescue64 && cd ..
+    ./configure && make all && cd images && ./getresources && ./buildpbaroot && ./buildbios && ./buildUEFI64 && mkdir UEFI64 && mv UEFI64-1.16*.img.gz UEFI64 && ./buildrescue Rescue32 && ./buildrescue Rescue64 && cd ..
     sudo updatedb &
     printf "\\\\n\\\\nAll done.\\\\n\\\\n\\\\n"
   SHELL
