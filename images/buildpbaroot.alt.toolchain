@@ -1,0 +1,70 @@
+#!/bin/bash
+set -x
+function die {
+echo An error has occured please fix this and start over
+exit 99
+}
+. conf
+cd scratch
+# clean up and start over
+rm -rf buildroot
+git clone ${BUILDROOT} || die
+cd buildroot
+git checkout -b PBABUILD ${BUILDROOT_TAG}  || die
+git reset --hard
+git clean -df
+find -name S40network -exec rm {} \;
+# add out of tree build directoried and files
+# 64 bit system
+mkdir 64bit
+cp ../../buildroot/64bit/.config 64bit/
+cp ../../buildroot/64bit/* 64bit/
+cp -r ../../buildroot/64bit/overlay 64bit/
+# 32 bit system
+mkdir 32bit
+cp ../../buildroot/32bit/.config 32bit/
+cp ../../buildroot/32bit/* 32bit/
+cp -r ../../buildroot/32bit/overlay 32bit/
+# add the current buildroot packages
+sed -i '/sedutil/d' package/Config.in
+sed -i '/menu "System tools"/a \\tsource "package/sedutil/Config.in"' package/Config.in
+cp -r ../../buildroot/packages/sedutil/ package/
+# Make a distribution from the current source
+cd ../../..
+autoreconf 
+./configure
+make dist
+mkdir images/scratch/buildroot/dl/
+cp sedutil-*.tar.gz images/scratch/buildroot/dl/
+make distclean
+cd images/scratch/buildroot
+
+# build the rootfs for 64 and 32 bit systems
+echo Making the 64bit PBA Linux system
+make O=64bit 2>&1 | tee 64bit/build_output.txt
+sed -i "s/_IO_ftrylockfile/_IO_EOF_SEEN/g" `grep -ri _IO_ftrylockfile -l`
+cat <<-EOF >> `find 64bit -name stdio-impl.h`
+
+#if !defined _IO_IN_BACKUP && defined _IO_EOF_SEEN
+# define _IO_IN_BACKUP 0x100
+#endif
+
+EOF
+make O=64bit 2>&1 | tee 64bit/build_output.txt
+
+
+echo Making the 32bit PBA Linux system
+make O=32bit 2>&1 | tee 32bit/build_output.txt
+sed -i "s/_IO_ftrylockfile/_IO_EOF_SEEN/g" `grep -ri _IO_ftrylockfile -l`
+cat <<-EOF >> `find 32bit -name stdio-impl.h`
+
+#if !defined _IO_IN_BACKUP && defined _IO_EOF_SEEN
+# define _IO_IN_BACKUP 0x100
+#endif
+
+EOF
+make O=32bit 2>&1 | tee 32bit/build_output.txt
+
+# back to where we started
+cd ../..
+exit 0
