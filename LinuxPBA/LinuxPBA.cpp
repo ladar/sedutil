@@ -25,7 +25,7 @@ This software is Copyright 2014-2017 Bright Plaza Inc. <drivetrust@drivetrust.co
 #include "GetPassPhrase.h"
 #include "UnlockSEDs.h"
 
-#ifdef ENABLE_PBA_NETWORKING
+#ifdef PBA_NETWORKING_BUILD
 #include "GetNetPassPhrase.h"
 #endif
 
@@ -44,7 +44,7 @@ int main(int argc, char** argv) {
     uint8_t n_unlocks = 0, n_counter = 0;
 
     /* If networking is enabled, try getting the password via the network. */
-#ifdef ENABLE_PBA_NETWORKING
+#ifdef PBA_NETWORKING_BUILD
     while (n_unlocks == 0 && n_counter < 3) {
         p = GetNetPassPhrase();
         n_unlocks += UnlockSEDs((char *)p->c_str());
@@ -59,7 +59,7 @@ int main(int argc, char** argv) {
         n_unlocks += UnlockSEDs((char *)p->c_str());
         if (n_unlocks == 0) n_counter++;
     }
-    
+
     if (n_counter >= 3) {
         printf("\n Authorization failed. Shutting down... \n");
         sync();

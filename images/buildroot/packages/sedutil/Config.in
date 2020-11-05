@@ -4,8 +4,7 @@ config BR2_PACKAGE_SEDUTIL
         help
           This package provides support for Self Encrypting Drives (SEDs)
 
-          https://DriveTrust.com/
-          https://github.com/Drive-Trust-Alliance/sedutil
+          https://github.com/ladar/sedutil
 
 comment "sedutil needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP

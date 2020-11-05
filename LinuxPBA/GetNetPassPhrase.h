@@ -21,7 +21,7 @@ along with sedutil.  If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 #include "SecureContainer.h"
 
-#ifdef ENABLE_PBA_NETWORKING
+#ifdef PBA_NETWORKING_BUILD
 
 /* Use the "auth" protocol port. */
 #define PORT 113

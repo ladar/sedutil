@@ -27,7 +27,7 @@ This software is Copyright 2014-2017 Bright Plaza Inc. <drivetrust@drivetrust.co
 
 #include "GetNetPassPhrase.h"
 
-#ifdef ENABLE_PBA_NETWORKING
+#ifdef PBA_NETWORKING_BUILD
 
 std::shared_ptr<SecureString> GetNetPassPhrase()
 {

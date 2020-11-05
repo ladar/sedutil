@@ -172,6 +172,7 @@ config.status
 Makefile
 sedutil-*.tar.*
 linuxpba
+linuxpba_networked
 sedutil-cli
 
 # GCC

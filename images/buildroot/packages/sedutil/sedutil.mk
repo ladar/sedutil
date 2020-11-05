@@ -24,4 +24,15 @@ sed -i '/^linux\/Version/,3 d' $(BUILD_DIR)/sedutil-$(SEDUTIL_VERSION)/Makefile.
 sed -i 's/^AM_CXXFLAGS.*/\0 -DPBA_BUILD/' $(BUILD_DIR)/sedutil-$(SEDUTIL_VERSION)/Makefile.in
 endef
 SEDUTIL_POST_EXTRACT_HOOKS += SEDUTIL_POST_EXTRACT_ACTIONS
+# Use the networked PBA if networking is enabled. Otherwise delete it from build directory.
+ifeq ($(BR2_PACKAGE_SEDUTIL_NETWORKING),y)
+define SEDUTIL_POST_BUILD_ACTIONS
+rm -f $(BUILD_DIR)/sedutil-$(SEDUTIL_VERSION)/linuxpba
+mv $(BUILD_DIR)/sedutil-$(SEDUTIL_VERSION)/linuxpba_networked $(BUILD_DIR)/sedutil-$(SEDUTIL_VERSION)/linuxpba
+else
+define SEDUTIL_POST_BUILD_ACTIONS
+rm -f $(BUILD_DIR)/sedutil-$(SEDUTIL_VERSION)/linuxpba_networked
+endef
+endif
+SEDUTIL_POST_BUILD_HOOKS += SEDUTIL_POST_BUILD_ACTIONS
 $(eval $(autotools-package))

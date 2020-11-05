@@ -36,6 +36,7 @@ linuxpba_SOURCES = LinuxPBA/LinuxPBA.cpp LinuxPBA/GetPassPhrase.cpp LinuxPBA/Unl
 	LinuxPBA/GetPassPhrase.h LinuxPBA/UnlockSEDs.h \
 	$(LINUX_COMMON_CODE) \
 	$(SEDUTIL_COMMON_CODE)
+linuxpba_networked_CPPFLAGS = -DPBA_NETWORKING_BUILD=1
 linuxpba_networked_SOURCES = LinuxPBA/GetNetPassPhrase.cpp LinuxPBA/GetNetPassPhrase.h \
 	$(linuxpba_SOURCES)
 EXTRA_DIST = linux/GitVersion.sh linux/PSIDRevert_LINUX.txt linux/TestSuite.sh README.md docs/sedutil-cli.8
