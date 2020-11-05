@@ -35,9 +35,9 @@ And the setup process is complete. Be sure to replace the **`?`** with the drive
 If you would like to create additional "user" passwords, you can run the following commands. These commands will setup password(s) capable of unlocking a device, but which lack the authority to perform administrative functions. This step is entirely optional.
 
 ```sh
-sedutil-cli --setPassword User1 USER-PASSWORD /dev/nvme?
+sedutil-cli --setPassword ADMIN-PASSWORD User1 USER-PASSWORD /dev/nvme?
 sedutil-cli --addUserToLockingACEs User1 ADMIN-PASSWORD /dev/nvme?
-sedutil-cli --enableUser User1 ADMIN-PASSWORD /dev/nvme?
+sedutil-cli --enableUser ADMIN-PASSWORD User1 /dev/nvme?
 ```
 
 As with the setup process, be sure to replace the **`?`** with the drive number (typically 0). If you aren't using an NVME drive, update the entire device path accordingly. Replace **`USER-PASSWORD`**  with your own randomly generated string of 40 or more characters. Replace **`ADMIN-PASSWORD`** with the password you created during the setup phase. This will grant the newly created user permission to unlock the device.
