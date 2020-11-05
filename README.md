@@ -51,9 +51,7 @@ This version of sedutil is based off the original [@dta](https://github.com/Driv
 Unique to this repo are the following modifications:
 
 * Uses SHA512 instead of SHA1 when deriving the encryption key (see backwards compatibility below).
-* UEFI boots will use 720p instead of the native resolution (critical for those with HiDPI screens).
 * The boot authenticator allows a maximum of 3 password entry attempts per boot attempt.
-* Networking support has been removed from the recovery and pre-boot authentication images.
 * Small user interface improvements/cleanup.
 
 ## Backwards Compatibility
