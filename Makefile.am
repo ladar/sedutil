@@ -17,31 +17,27 @@ SEDUTIL_COMMON_CODE = \
 	Common/DtaSession.cpp Common/DtaSession.h \
 	Common/DtaStructures.h Common/log.h Common/DtaLexicon.h Common/DtaConstants.h Common/DtaEndianFixup.h \
 	Common/pbkdf2/blockwise.c Common/pbkdf2/blockwise.h Common/pbkdf2/chash.c Common/pbkdf2/chash.h Common/pbkdf2/handy.h \
-	Common/pbkdf2/hmac.c Common/pbkdf2/hmac.h Common/pbkdf2/pbkdf2.c Common/pbkdf2/pbkdf2.h Common/pbkdf2/sha512.c  Common/pbkdf2/sha1.c \
+	Common/pbkdf2/hmac.c Common/pbkdf2/hmac.h Common/pbkdf2/pbkdf2.c Common/pbkdf2/pbkdf2.h Common/pbkdf2/sha512.c Common/pbkdf2/sha1.c \
 	Common/pbkdf2/sha2.h Common/pbkdf2/tassert.h Common/pbkdf2/bitops.h Common/SecureContainer.h Common/pbkdf2/sha1.h
-sbin_PROGRAMS = sedutil-cli linuxpba
-sedutil_cli_SOURCES = linux/Version.h Common/sedutil.cpp Common/DtaOptions.cpp Common/DtaOptions.h \
-	\
+LINUX_COMMON_CODE = \
 	linux/DtaDevLinuxNvme.cpp linux/DtaDevLinuxNvme.h \
 	linux/DtaDevLinuxSata.cpp linux/DtaDevLinuxSata.h \
 	linux/DtaDevOS.cpp linux/DtaDevOS.h \
 	linux/DtaDevLinuxDrive.cpp linux/DtaDevLinuxDrive.h \
-	linux/os.h \
+	linux/os.h
+sbin_PROGRAMS = sedutil-cli linuxpba
+sedutil_cli_SOURCES = linux/Version.h Common/sedutil.cpp Common/DtaOptions.cpp Common/DtaOptions.h \
 	LinuxPBA/GetPassPhrase.cpp \
+	$(LINUX_COMMON_CODE) \
 	$(SEDUTIL_COMMON_CODE)
 CLEANFILES = linux/Version.h
 BUILT_SOURCES = linux/Version.h
-#
 linuxpba_SOURCES = LinuxPBA/LinuxPBA.cpp LinuxPBA/GetPassPhrase.cpp LinuxPBA/UnlockSEDs.cpp \
-	 LinuxPBA/GetPassPhrase.h LinuxPBA/UnlockSEDs.h \
-	\
-	linux/DtaDevLinuxNvme.cpp linux/DtaDevLinuxNvme.h \
-	linux/DtaDevLinuxSata.cpp linux/DtaDevLinuxSata.h \
-	linux/DtaDevOS.cpp linux/DtaDevOS.h \
-	linux/DtaDevLinuxDrive.cpp linux/DtaDevLinuxDrive.h \
-	linux/os.h \
-	\
+	LinuxPBA/GetPassPhrase.h LinuxPBA/UnlockSEDs.h \
+	$(LINUX_COMMON_CODE) \
 	$(SEDUTIL_COMMON_CODE)
+linuxpba_networked_SOURCES = LinuxPBA/GetNetPassPhrase.cpp LinuxPBA/GetNetPassPhrase.h \
+	$(linuxpba_SOURCES)
 EXTRA_DIST = linux/GitVersion.sh linux/PSIDRevert_LINUX.txt linux/TestSuite.sh README.md docs/sedutil-cli.8
 man_MANS = docs/sedutil-cli.8
 linux/Version.h:

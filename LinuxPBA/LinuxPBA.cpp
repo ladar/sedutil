@@ -18,13 +18,16 @@ This software is Copyright 2014-2017 Bright Plaza Inc. <drivetrust@drivetrust.co
 
 * C:E********************************************************************** */
 
-
 #include <unistd.h>
 #include <sys/reboot.h>
 #include <iostream>
 #include "log.h"
 #include "GetPassPhrase.h"
 #include "UnlockSEDs.h"
+
+#ifdef ENABLE_PBA_NETWORKING
+#include "GetNetPassPhrase.h"
+#endif
 
 using namespace std;
 
@@ -37,9 +40,20 @@ int main(int argc, char** argv) {
     LOG(D4) << "Legacy PBA start" << endl;
     printf("\n\n Boot Authorization \n");
 
-
     std::shared_ptr<SecureString> p;
     uint8_t n_unlocks = 0, n_counter = 0;
+
+    /* If networking is enabled, try getting the password via the network. */
+#ifdef ENABLE_PBA_NETWORKING
+    while (n_unlocks == 0 && n_counter < 3) {
+        p = GetNetPassPhrase();
+        n_unlocks += UnlockSEDs((char *)p->c_str());
+        if (n_unlocks == 0) n_counter++;
+    }
+    n_counter = 0;
+#endif
+
+    /* Otherwise ask for the unlock password via the console. */
     while (n_unlocks == 0 && n_counter < 3) {
         p = GetPassPhrase(" Password: ");
         n_unlocks += UnlockSEDs((char *)p->c_str());
