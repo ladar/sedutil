@@ -25,7 +25,7 @@ LINUX_COMMON_CODE = \
 	linux/DtaDevOS.cpp linux/DtaDevOS.h \
 	linux/DtaDevLinuxDrive.cpp linux/DtaDevLinuxDrive.h \
 	linux/os.h
-sbin_PROGRAMS = sedutil-cli linuxpba
+sbin_PROGRAMS = sedutil-cli linuxpba linuxpba_networked
 sedutil_cli_SOURCES = linux/Version.h Common/sedutil.cpp Common/DtaOptions.cpp Common/DtaOptions.h \
 	LinuxPBA/GetPassPhrase.cpp \
 	$(LINUX_COMMON_CODE) \
