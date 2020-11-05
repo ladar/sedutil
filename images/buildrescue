@@ -12,7 +12,7 @@ if [ x${1} == "xRescue32" ] ; then
 elif [ x${1} == "xRescue64" ] ; then
 	BUILDTYPE="RESCUE64"
 	ROOTDIR="64bit"
-else 
+else
 	echo "NO BUILDTYPE specified defalted to Rescue32"
 fi
 BUILDIMG=${BUILDTYPE}-${VERSIONINFO}.img
@@ -31,11 +31,11 @@ echo "Building " $BUILDTYPE "image"
 #
 # Remaster the root file system
 sudo rm -rf scratch/rescuefs
-sudo rm -f scratch/buildroot/${ROOTDIR}/images/rescuefs.cpio.xz 
+sudo rm -f scratch/buildroot/${ROOTDIR}/images/rescuefs.cpio.xz
 mkdir scratch/rescuefs
 cd scratch/rescuefs
 xz --decompress --stdout ../buildroot/${ROOTDIR}/images/rootfs.cpio.xz | sudo cpio -i -H newc -d
-#weird permission denied on etc/issue 
+#weird permission denied on etc/issue
 echo "* ***********************************" > /tmp/issue
 echo "* DTA sedutil rescue image ${BUILDIMG}" >> /tmp/issue
 echo "*" >> /tmp/issue
@@ -54,7 +54,7 @@ sudo rm -rf scratch/rescuefs
 sudo rm -rf ${BUILDTYPE} ; mkdir ${BUILDTYPE} ; cd ${BUILDTYPE}
 dd if=/dev/zero of=${BUILDIMG} bs=1M count=75
 if [ ${BUILDTYPE} == "RESCUE32" ] ; then
-	(echo o;echo n;echo p;echo 1;echo "";echo "";echo a;echo 1;echo w) | fdisk -C 100 ${BUILDIMG}
+	(echo o;echo n;echo p;echo 1;echo "";echo "";echo a;echo w) | fdisk -C 100 ${BUILDIMG}
 	dd if=../scratch/${SYSLINUX}/bios/mbr/mbr.bin of=${BUILDIMG} count=1 conv=notrunc bs=512
 else
 	(echo "n";echo "";echo "";echo "";echo "ef00";echo w;echo Y) | gdisk ${BUILDIMG}
@@ -81,7 +81,7 @@ else
 	sudo cp ../scratch/buildroot/64bit/images/bzImage image/EFI/boot/
 	sudo cp ../scratch/buildroot/64bit/images/rescuefs.cpio.xz image/EFI/boot/rootfs.cpio.xz
 	sudo cp ../buildroot/syslinux.cfg image/EFI/boot/
-fi	
+fi
 sudo umount image
 sudo losetup -d $LOOPDEV
 gzip ${BUILDIMG}

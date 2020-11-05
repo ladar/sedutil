@@ -12,7 +12,7 @@ Vagrant.configure(2) do |config|
     v.cpus = 12
     v.volume_cache = "unsafe"
   end
-  
+
   config.vm.provision "shell", run: "always", privileged: true, inline: <<-SHELL
     sudo su
     export DEBIAN_FRONTEND=noninteractive
@@ -24,12 +24,12 @@ Vagrant.configure(2) do |config|
   SHELL
 
   config.vm.provision "shell", run: "always", privileged: false, inline: <<-SHELL
-    
+
     cd $HOME && ([ -d sedutil ] && rm -rf $HOME/sedutil)
     git clone https://github.com/ladar/sedutil && cd sedutil
 
     if [ ! -f ./configure ]; then autoreconf --install ; fi
-    ./configure && make all && cd images && ./getresources && ./buildpbaroot && ./buildbios && ./buildUEFI64 && mkdir UEFI64 && mv UEFI64-1.16*.img.gz UEFI64 && ./buildrescue Rescue32 && ./buildrescue Rescue64 && cd ..
+    ./configure && make all && cd images && ./getresources && ./buildpbaroot && ./buildbios && ./buildUEFI64 && ./buildrescue Rescue32 && ./buildrescue Rescue64 && cd ..
     sudo updatedb &
     printf "\\\\n\\\\nAll done.\\\\n\\\\n\\\\n"
   SHELL

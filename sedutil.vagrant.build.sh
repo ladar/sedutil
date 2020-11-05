@@ -31,6 +31,8 @@ if [ "`vagrant plugin list --debug 2>&1 | grep --extended-regexp --only-matching
 fi
 
 vagrant ssh-config > config
-echo "get sedutil/sedutil-1.16.0.tar.gz sedutil-1.16.0.tar.gz" | sftp -F config default
-echo "get -r sedutil/images/BIOS32 images/BIOS32" | sftp -F config default
-echo "get -r sedutil/images/UEFI64 images/UEFI64" | sftp -F config default
+echo "get sedutil/sedutil-1.16.0.tar.gz sedutil-1.16.0.tar.gz" | sftp -q -F config default
+echo "get -r sedutil/images/BIOS32 images/BIOS32" | sftp -q -F config default
+echo "get -r sedutil/images/UEFI64 images/UEFI64" | sftp -q -F config default
+echo "get -r sedutil/images/RESCUE32 images/RESCUE32" | sftp -q -F config default
+echo "get -r sedutil/images/RESCUE64 images/RESCUE64" | sftp -q -F config default
