@@ -83,15 +83,15 @@ check_availability() {
 }
 
 create_image() {
-    mkdir ${VERBOSE+-v} -- "$BUILDTYPE"
+    mkdir -p ${VERBOSE+-v} -- "$BUILDTYPE" && cd "$BUILDTYPE"
     trap 'rm_temporaries' EXIT
     truncate -s32M "$BUILDIMG"
     sgdisk -n0:0:0 -t0:ef00 "$BUILDIMG"
-    LOOPDEV=$(sudo losetup ${VERBOSE+-v} --partscan --show --find "$BUILDIMG")
+    LOOPDEV=$(sudo losetup ${VERBOSE+-v} -o 1048576 --partscan --show --find "$BUILDIMG")
     trap 'detach_lo_device; rm_temporaries' EXIT
-    sudo mkfs.vfat ${VERBOSE+-v} -n "$BUILDTYPE" -- "${LOOPDEV}p1"
-    mkdir ${VERBOSE+-v} -- "$IMAGE_DIR"
-    sudo mount ${VERBOSE+-v} -- "${LOOPDEV}p1" "$IMAGE_DIR"
+    sudo mkfs.vfat ${VERBOSE+-v} -n "$BUILDTYPE" -- "${LOOPDEV}"
+    mkdir -p ${VERBOSE+-v} -- "$IMAGE_DIR"
+    sudo mount ${VERBOSE+-v} -- "${LOOPDEV}" "$IMAGE_DIR"
     trap 'unmount_image; detach_lo_device; rm_temporaries' EXIT
     sudo install ${VERBOSE+-v} -D -- "$EFI_FILE" "${TARGET_DIR}/$BOOTLOADER_FILE"
     # shellcheck disable=SC2086
