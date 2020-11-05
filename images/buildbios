@@ -18,7 +18,7 @@ BUILDIMG=${BUILDTYPE}-${VERSIONINFO}.img
 #
 sudo rm -rf ${BUILDTYPE} ; mkdir ${BUILDTYPE} ; cd ${BUILDTYPE}
 dd if=/dev/zero of=${BUILDIMG} bs=1M count=55
-(echo o;echo n;echo p;echo 1;echo "";echo "";echo "";echo a;echo 1;echo w) | fdisk ${BUILDIMG}
+(echo o;echo n;echo p;echo 1;echo "";echo "";echo "";echo a;echo w) | fdisk ${BUILDIMG}
 dd if=../scratch/${SYSLINUX}/bios/mbr/mbr.bin of=${BUILDIMG} count=1 conv=notrunc bs=512
 LOOPDEV=`sudo losetup --show -f -o 1048576 ${BUILDIMG}`
 sudo mkfs.ext4 $LOOPDEV -L ${BUILDTYPE}
