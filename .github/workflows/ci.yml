@@ -1,0 +1,50 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  Build:
+    runs-on: ubuntu-18.04
+    env:
+        LANG: en_US.UTF-8
+        LANGUAGE: en_US:en
+        LC_ALL: en_US.UTF-8
+    steps:
+    - uses: actions/checkout@master
+    - name: Install dependencies
+      run: sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt-get install -y bc build-essential cpio dosfstools g++-multilib gdisk git-core libncurses5-dev libncurses5-dev:i386 python squashfs-tools sudo unzip wget locales autoconf nasm rsync
+    - name: Configure sedutil
+      run: autoreconf --install && ./configure
+    - name: Build sedutil
+      run: make all
+    - name: List built binary
+      run: ls -l sedutil-cli
+    - name: Upload sedutil binary artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: sedutil-cli-${{ github.sha }}
+        path: sedutil-cli
+    - name: Build resources
+      run: cd images && ./getresources
+    - name: Build 64bit and 32bit PBA Linux system
+      run: cd images && ./buildpbaroot
+    - name: Build BIOS
+      run: cd images && ./buildbios
+    - name: Build UEFI64
+      run: cd images && ./buildUEFI64
+    - name: Build Rescue32
+      run: cd images && ./buildrescue Rescue32
+    - name: Build Rescue64
+      run: cd images && ./buildrescue Rescue64
+    - name: List built files
+      run: ls -l sedutil-* images/*/*.gz
+    - name: Upload source code artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: sedutil-source-${{ github.sha }}
+        path: sedutil-*.tar.gz
+    - name: Upload image artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: sedutil-images-${{ github.sha }}
+        path: images/*/*.img.gz
