@@ -17,13 +17,13 @@ BUILDIMG=${BUILDTYPE}-$(printf '%s' "$VERSIONINFO" | tr '/' '-').img
 IMAGE_DIR=$BUILDTYPE/image
 TARGET_DIR=$IMAGE_DIR/$BOOTLOADER_DIR
 
-EFI_FILE="scratch/${SYSLINUX}/efi64/efi/syslinux.efi"
-IMAGE_FILES="scratch/${SYSLINUX}/efi64/com32/elflink/ldlinux/ldlinux.e64
-    scratch/buildroot/64bit/images/bzImage
-    scratch/buildroot/64bit/images/rootfs.cpio.xz
-    scratch/buildroot/64bit/target/sbin/linuxpba
-    scratch/buildroot/64bit/target/sbin/sedutil-cli
-    buildroot/syslinux.cfg"
+EFI_FILE="${PWD}/scratch/${SYSLINUX}/efi64/efi/syslinux.efi"
+IMAGE_FILES="${PWD}/scratch/${SYSLINUX}/efi64/com32/elflink/ldlinux/ldlinux.e64
+    ${PWD}/scratch/buildroot/64bit/images/bzImage
+    ${PWD}/scratch/buildroot/64bit/images/rootfs.cpio.xz
+    ${PWD}/scratch/buildroot/64bit/target/sbin/linuxpba
+    ${PWD}/scratch/buildroot/64bit/target/sbin/sedutil-cli
+    ${PWD}/buildroot/syslinux.cfg"
 
 ## Exit handlers ##############################################################
 rm_temporaries() {
@@ -93,10 +93,10 @@ create_image() {
     mkdir -p ${VERBOSE+-v} -- "$IMAGE_DIR"
     sudo mount ${VERBOSE+-v} -- "${LOOPDEV}" "$IMAGE_DIR"
     trap 'unmount_image; detach_lo_device; rm_temporaries' EXIT
-    sudo install ${VERBOSE+-v} -D -- "../$EFI_FILE" "${TARGET_DIR}/$BOOTLOADER_FILE"
+    sudo install ${VERBOSE+-v} -D -- "$EFI_FILE" "${TARGET_DIR}/$BOOTLOADER_FILE"
     # shellcheck disable=SC2086
     for f in $IMAGE_FILES; do
-        sudo install ${VERBOSE+-v} -D -- ../$f "$TARGET_DIR"
+        sudo install ${VERBOSE+-v} -D -- "$f" "$TARGET_DIR"
     done
     sync
     gzip -k ${VERBOSE+-v} "$BUILDIMG"
