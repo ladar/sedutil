@@ -19,4 +19,4 @@ along with sedutil.  If not, see <http://www.gnu.org/licenses/>.
 * C:E********************************************************************** */
 #pragma once
 #include "SecureContainer.h"
-std::shared_ptr<SecureString> GetPassPhrase(const char *prompt, bool show_asterisk=true);
+std::shared_ptr<SecureString> GetPassPhrase(const char *prompt, bool show_asterisk=false);
