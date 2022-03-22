@@ -5,6 +5,12 @@ echo An error has occured please fix this and start over
 exit 99
 }
 . conf
+if [ -z "${MAKE_JOBS}" ]
+then
+	_MAKE_JOBS=
+else
+	_MAKE_JOBS="-j${MAKE_JOBS}"
+fi
 cd scratch
 # clean up and start over
 rm -rf buildroot
@@ -41,9 +47,9 @@ make distclean
 cd images/scratch/buildroot
 # build the rootfs for 64 and 32 bit systems
 echo Making the 64bit PBA Linux system
-make -j12 O=64bit 2>&1 | tee 64bit/build_output.txt
+( make ${_MAKE_JOBS} O=64bit 2>&1 || die ) | tee 64bit/build_output.txt
 echo Making the 32bit PBA Linux system
-make -j12 O=32bit 2>&1 | tee 32bit/build_output.txt
+( make ${_MAKE_JOBS} O=32bit 2>&1 || die ) | tee 32bit/build_output.txt
 # back to where we started
 cd ../..
 exit 0
