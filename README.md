@@ -4,7 +4,7 @@ The sedutil project provides a CLI tool (`sedutil-cli`) capable of setting up an
 
 ## Setup
 
-To configure a drive, load a compatible [RECOVERY](https://github.com/Drive-Trust-Alliance/sedutil/releases) image onto a USB drive with the following commands:
+To configure a drive, load a compatible [RECOVERY](https://github.com/ladar/sedutil/releases) image onto a USB drive with the following commands:
 
 ```sh
 curl -L -o RESCUE64-1.15.1-87-SHA512.img.gz https://github.com/ladar/sedutil/releases/download/1.15.1-87/RESCUE64-1.15.1-87-SHA512.img.gz
