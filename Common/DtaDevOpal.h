@@ -268,13 +268,22 @@ public:
 	uint8_t rawCmd(char *sp, char * auth, char *pass,
 		char *invoker, char *method, char *plist);
 
-    /** Add the authority to Locking (Rd/RW) and MBRControl DoneToDOR ACEs
-      * This function gets authorities already in ACEs.
-      * Only the OR boolean_ACE are handled in boolean expressions.
-      * @param Admin1Password Password of the LockingSP authority
-      * @param userid The authority to add to Locking ACEs
-      */
-    uint8_t addUserToLockingACEs(const char *userid, char *Admin1Password);
+        /** Add the authority to Locking (Rd/RW) and MBRControl DoneToDOR ACEs
+        * This function gets authorities already in ACEs.
+        * Only the OR boolean_ACE are handled in boolean expressions.
+        * @param Admin1Password Password of the LockingSP authority
+        * @param userid The authority to add to Locking ACEs
+        */
+        uint8_t addUserToLockingACEs(const char *userid, char *Admin1Password);
+        
+        /** Enable or disable the Admin SP Makers Authority
+        * @param sidPassword The SID password
+        * @param enable Whether to enable (true) or disable (false) the Makers Authority
+        */
+        uint8_t enableDisableMakersAuthority(char * password, uint8_t enable);
+        
+        /** Print the status of the Admin SP Makers Authority */
+        uint8_t printMakersAuthorityStatus();
 protected:
         /** Primitive to handle the setting of a value in the locking sp.
          * @param table_uid UID of the table 
@@ -316,8 +325,7 @@ protected:
       * @param ace_uid The ACE to read
       * @param authorities_uid Vector containing authorities uids
       */
-    uint8_t getAuthoritiesFromACE(OPAL_UID ace_uid, std::vector<std::vector<uint8_t>>& authorities_uid);
-
+    uint8_t getAuthoritiesFromACE(OPAL_UID ace_uid, std::vector<std::vector<uint8_t>>& authorities_uid);    
     /** Ask the user to input a new password. 
       * This function fails if the first password and it's confirmation differs 
       * @param password The new password entered by the user

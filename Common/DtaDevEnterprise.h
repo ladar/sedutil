@@ -213,8 +213,17 @@ public:
 	 * @param userid The user to add to Locking ACEs
 	 * @param Admin1Password Password of the LockingSP authority
 	 */
-    uint8_t addUserToLockingACEs(const char *userid, char *Admin1Password);
-
+        uint8_t addUserToLockingACEs(const char *userid, char *Admin1Password);
+        
+        /** Enable or disable the Admin SP Makers Authority
+        * @param sidPassword The SID password
+        * @param enable Whether to enable (true) or disable (false) the Makers Authority
+        */
+        uint8_t enableDisableMakersAuthority(char * password, uint8_t enable);
+        
+        /** Print the status of the Admin SP Makers Authority */
+        uint8_t printMakersAuthorityStatus();
+        
 protected:
 	uint8_t getDefaultPassword();
 private:

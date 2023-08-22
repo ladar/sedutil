@@ -303,6 +303,15 @@ public:
 	 * @param Admin1Password Password of the LockingSP authority
 	 */
     virtual uint8_t addUserToLockingACEs(const char *userid, char* Admin1Password) = 0;
+	/** Enable or disable the Admin SP Makers Authority
+	 * @param sidPassword The SID password
+	 * @param enable Whether to enable (true) or disable (false) the Makers Authority
+	 */
+	virtual uint8_t enableDisableMakersAuthority(char * sidPassword, uint8_t enable) = 0;
+	
+	/** Print the status of the Admin SP Makers Authority */
+	virtual uint8_t printMakersAuthorityStatus() = 0;
+	
 	bool no_hash_passwords; /** disables hashing of passwords */
 	bool hex_passwords; /** converts passwords from hex before using them */
 	sedutiloutput output_format; /** standard, readable, JSON */
