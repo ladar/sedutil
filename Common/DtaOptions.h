@@ -102,6 +102,9 @@ typedef enum _sedutiloption {
     prepareForS3Sleep,
 	rawCmd,
     addUserToLockingACEs,
+	disableMakersAuthority,
+	enableMakersAuthority,
+	printMakersAuthorityStatus,
 } sedutiloption;
 
 /** verify the number of arguments passed */

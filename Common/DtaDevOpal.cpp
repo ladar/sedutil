@@ -2098,6 +2098,65 @@ uint8_t DtaDevOpal::getAuthoritiesFromACE(OPAL_UID ace_uid,
     }
     return lastRC;
 }
+uint8_t DtaDevOpal::enableDisableMakersAuthority(char * password, uint8_t enable)
+{
+	LOG(D1) << "Entering DtaDevOpal::enableDisableMakersAuthority()";
+	uint8_t lastRC;
+	session = new DtaSession(this);
+	if (NULL == session) {
+		LOG(E) << "Unable to create session object ";
+		return DTAERROR_OBJECT_CREATE_FAILED;
+	}
+	if ((lastRC = session->start(OPAL_UID::OPAL_ADMINSP_UID, password, OPAL_UID::OPAL_SID_UID)) != 0) {
+		LOG(E) << "Unable to start AdminSP SID session " << dev;
+		delete session;
+		return lastRC;
+	}
+	vector<uint8_t> table;
+	table.push_back(OPAL_SHORT_ATOM::BYTESTRING8);
+	for (int i = 0; i < 8; i++) {
+		table.push_back(OPALUID[OPAL_UID::OPAL_MAKERS_UID][i]);
+	}
+	if ((lastRC = setTable(table, AUTHORITY_ENABLED, enable ? OPAL_TRUE : OPAL_FALSE)) != 0) {
+		LOG(E) << "Unable to " << (enable ? "enable" : "disable") << " the Makers Authority";
+		delete session;
+		return lastRC;
+	}
+	LOG(I) << "Makers Authority " << (enable ? "enabled" : "disabled");
+	delete session;
+	LOG(D1) << "Exiting DtaDevOpal::enableDisableMakersAuthority()";
+	return 0;
+}
+uint8_t DtaDevOpal::printMakersAuthorityStatus()
+{
+	LOG(D1) << "Entering DtaDevOpal::printMakersAuthorityStatus()";
+	uint8_t lastRC;
+	session = new DtaSession(this);
+	if (NULL == session) {
+		LOG(E) << "Unable to create session object ";
+		return DTAERROR_OBJECT_CREATE_FAILED;
+	}
+	if ((lastRC = session->start(OPAL_UID::OPAL_ADMINSP_UID)) != 0) {
+		LOG(E) << "Unable to start Unauthenticated session " << dev;
+		delete session;
+		return lastRC;
+	}
+	vector<uint8_t> table;
+	table. push_back(OPAL_SHORT_ATOM::BYTESTRING8);
+	for (int i = 0; i < 8; i++) {
+		table.push_back(OPALUID[OPAL_UID::OPAL_MAKERS_UID][i]);
+	}
+	if ((lastRC = getTable(table, AUTHORITY_ENABLED, AUTHORITY_ENABLED)) != 0) {
+		LOG(E) << "Unable to get Makers Authority table";
+		delete session;
+		return lastRC;
+	}
+	cout << "Makers Authority status:" << endl;
+	cout << "  " << "Enabled: " << (response.getUint8(4) ? "Y" : "N") << endl;
+	delete session;
+	LOG(D1) << "Exiting DtaDevOpal::printMakersAuthorityStatus()";
+	return 0;
+}
 #ifdef __linux__
 uint8_t DtaDevOpal::askNewPassword(std::shared_ptr<SecureString> &password, bool confirm) {
     uint8_t lastRC = OPALSTATUSCODE::SUCCESS;

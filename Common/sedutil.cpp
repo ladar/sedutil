@@ -284,9 +284,21 @@ int main(int argc, char * argv[])
         LOG(D) << "Performing addUserToLockingACEs";
         return d->addUserToLockingACEs(argv[opts.userid], GET_PASSWORD());
 		break;
-    default:
-        LOG(E) << "Unable to determine what you want to do ";
-        usage();
-    }
+	case sedutiloption::disableMakersAuthority:
+		LOG(D) << "Disabling the Makers authority";
+		return d->enableDisableMakersAuthority(argv[opts.password], 0);
+		break;
+	case sedutiloption::enableMakersAuthority:
+		LOG(D) << "Enabling the Makers authority";
+		return d->enableDisableMakersAuthority(argv[opts.password], 1);
+		break;
+	case sedutiloption::printMakersAuthorityStatus:
+		LOG(D) << "Printing the Makers authority status";
+		return d->printMakersAuthorityStatus();
+		break;
+	default:
+		LOG(E) << "Unable to determine what you want to do ";
+		usage();
+  }
 	return DTAERROR_INVALID_COMMAND;
 }

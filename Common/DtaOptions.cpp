@@ -104,6 +104,12 @@ void usage()
     printf("                                grant UserX permission to lock/unlock device\n");
     printf("--enableUser <userid> <Admin1password> <device> \n");
     printf("                                grant UserX permission to lock/unlock device\n");
+    printf("--disableMakersAuthority <SIDpassword> <device> \n");
+    printf("                                revoke the device manufacturer's admin powers\n" );
+    printf("--enableMakersAuthority <SIDpassword> <device> \n");
+    printf("                                grant the device manufacturer admin powers\n");
+    printf("--printMakersAuthorityStatus <device> \n");
+    printf("                                print the Makers Authority status\n");
     printf("--printPasswordHash <password> <device>\n");
     printf("                                print the hash of the password \n");
     printf("                                as computed by sedutil. Hex-ecoded.\n");
@@ -582,6 +588,9 @@ uint8_t DtaOptions(int argc, char * argv[], DTA_OPTIONS * opts)
 			OPTION_IS(password)
 			OPTION_IS(device)
 		END_OPTION
+		BEGIN_OPTION(disableMakersAuthority, 2, 1) OPTION_IS(password) OPTION_IS(device) END_OPTION
+		BEGIN_OPTION(enableMakersAuthority, 2, 1) OPTION_IS(password) OPTION_IS(device) END_OPTION
+		BEGIN_OPTION(printMakersAuthorityStatus, 1, 1) OPTION_IS(device) END_OPTION
 		else {
       LOG(E) << "Invalid command line argument " << argv[i];
 			return DTAERROR_INVALID_COMMAND;

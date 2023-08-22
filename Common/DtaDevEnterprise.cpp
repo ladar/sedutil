@@ -1695,6 +1695,60 @@ uint8_t DtaDevEnterprise::addUserToLockingACEs(const char *userid, char * Admin1
 	LOG(D1) << "Exiting DtaDevEnterprise::addUserLockingACEs";
 	return 0;
 }
+uint8_t DtaDevEnterprise::enableDisableMakersAuthority(char * password, uint8_t enable)
+{
+	LOG(D1) << "Entering DtaDevEnterprise::enableDisableMakersAuthority()";
+	uint8_t lastRC;
+	session = new DtaSession(this);
+	if (NULL == session) {
+		LOG(E) << "Unable to create session object ";
+		return DTAERROR_OBJECT_CREATE_FAILED;
+	}
+	if ((lastRC = session->start(OPAL_UID::OPAL_ADMINSP_UID, password, OPAL_UID::OPAL_SID_UID)) != 0) {
+		LOG(E) << "Unable to start AdminSP SID session " << dev;
+		delete session;
+		return lastRC;
+	}
+	vector<uint8_t> table;
+	set8(table, OPALUID[OPAL_UID::OPAL_MAKERS_UID]);
+	if ((lastRC = setTable(table, "Enabled", enable ? OPAL_TRUE : OPAL_FALSE)) != 0) {
+		LOG(E) << "Unable to " << (enable ? "enable" : "disable") << " the Makers Authority";
+		delete session;
+		return lastRC;
+	}
+	LOG(I) << "Makers Authority " << (enable ? "enabled" : "disabled");
+	delete session;
+	LOG(D1) << "Exiting DtaDevEnterprise::enableDisableMakersAuthority()";
+	return 0;
+}
+
+uint8_t DtaDevEnterprise::printMakersAuthorityStatus()
+{
+	LOG(D1) << "Entering DtaDevEnterprise::printMakersAuthorityStatus()";
+	uint8_t lastRC;
+	session = new DtaSession(this);
+	if (NULL == session) {
+		LOG(E) << "Unable to create session object ";
+		return DTAERROR_OBJECT_CREATE_FAILED;
+	}
+	if ((lastRC = session->start(OPAL_UID::OPAL_ADMINSP_UID)) != 0) {
+		LOG(E) << "Unable to start Unauthenticated session " << dev;
+		delete session;
+		return lastRC;
+	}
+	vector<uint8_t> table;
+	set8(table, OPALUID[OPAL_UID::OPAL_MAKERS_UID]);
+	if ((lastRC = getTable(table, "Enabled", "Enabled")) != 0) {
+		LOG(E) << "Unable to get Makers Authority table";
+		delete session;
+		return lastRC;
+	}
+	cout << "Makers Authority status:" << endl;
+	cout << "  " << "Enabled: " << (response.getUint8(5) ? "Y" : "N") << endl;
+	delete session;
+	LOG(D1) << "Exiting DtaDevEnterprise::printMakersAuthorityStatus()";
+	return 0;
+}
 #ifdef _MSC_VER
 #pragma warning(pop)
 #endif

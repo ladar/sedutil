@@ -94,6 +94,8 @@ uint8NOCODE(takeOwnership, char * newpassword, bool securemode)
 uint8NOCODE(setSIDPassword,char * oldpassword, char * newpassword,
 	uint8_t hasholdpwd, uint8_t hashnewpwd, bool securemode)
 uint8NOCODE(addUserToLockingACEs, const char* userid, char * Admin1Password)
+uint8NOCODE(enableDisableMakersAuthority, char * password, uint8_t enable)
+uint8NOCODE(printMakersAuthorityStatus)
 uint16_t DtaDevGeneric::comID()
 {
 	LOG(E) << "Generic Device class does not support function " << "comID" << std::endl; 
