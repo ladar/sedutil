@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #include <vector>
 #ifdef __linux__
 #include <memory>
@@ -35,7 +36,6 @@ template <class T> class SecureAllocator : public std::allocator<T>
 typedef std::basic_string<char, std::char_traits<char>, SecureAllocator<char>> SecureString;
 typedef std::vector<uint8_t, SecureAllocator<uint8_t>> SecureByteVector;
 #else
-#include <string>
 typedef std::string SecureString;
 typedef std::vector<uint8_t> SecureByteVector;
 #endif //__linux__
